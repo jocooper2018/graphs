@@ -39,6 +39,9 @@ export default class DijkstraExplorationGraph {
    * @param node The node to add to the graph.
    */
   public addNode(node: DijkstraExplorationGraphNode) {
+    if (node.previousNode !== null && !this.contains(node.previousNode.node)) {
+      throw new Error("Previous node not in the graph.");
+    }
     this.nodes.push(node);
   }
 
