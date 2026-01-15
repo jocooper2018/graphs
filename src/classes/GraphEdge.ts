@@ -16,21 +16,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import Graph from "./classes/Graph";
-import GraphNode from "./classes/GraphNode";
+import type GraphNode from "./GraphNode";
 
-const graph = new Graph("Test graph");
+export default class GraphEdge {
+  private readonly _node: GraphNode;
+  private readonly _distance: number;
 
-const nodeA = new GraphNode("A");
-const nodeB = new GraphNode("B");
-const nodeC = new GraphNode("C");
+  constructor(node: GraphNode, distance: number) {
+    this._node = node;
+    this._distance = distance;
+  }
 
-graph.addNode(nodeA);
-graph.addNode(nodeB);
-graph.addNode(nodeC);
+  public get node(): GraphNode {
+    return this._node;
+  }
 
-graph.connect(nodeA, nodeB, 1);
-graph.connect(nodeA, nodeB, 2);
-graph.connect(nodeB, nodeC, 1);
+  public get distance(): number {
+    return this._distance;
+  }
 
-console.log(graph.toString());
+  public toString(): string {
+    return `${this.node.value}: ${this.distance}`;
+  }
+}
