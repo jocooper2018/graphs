@@ -16,9 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type GraphNode from "./GraphNode";
+import type Comparable from "../interfaces/Comparable";
+import GraphNode from "./GraphNode";
 
-export default class GraphEdge {
+export default class GraphEdge implements Comparable<GraphEdge> {
+  public static equals(a: GraphEdge, b: GraphEdge): boolean {
+    return GraphNode.equals(a.node, b.node) && a.distance === b.distance;
+  }
+
   private readonly _node: GraphNode;
   private readonly _distance: number;
 
@@ -39,5 +44,9 @@ export default class GraphEdge {
 
   public toString(): string {
     return `${this.node.value}: ${this.distance}`;
+  }
+
+  public equals(other: GraphEdge): boolean {
+    return GraphEdge.equals(this, other);
   }
 }

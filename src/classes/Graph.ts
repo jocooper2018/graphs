@@ -17,14 +17,15 @@
  */
 
 import GraphNode from "./GraphNode";
+import ValueSet from "./ValueSet";
 
 export default class Graph {
   private readonly _name: string;
-  private readonly _nodes: Set<GraphNode>;
+  private readonly _nodes: ValueSet<GraphNode>;
 
   constructor(name: string) {
     this._name = name;
-    this._nodes = new Set<GraphNode>();
+    this._nodes = new ValueSet<GraphNode>();
   }
 
   /** The name of the graph. */
@@ -33,7 +34,7 @@ export default class Graph {
   }
 
   /** A set containing every nodes in the graph. */
-  public get nodes(): Set<GraphNode> {
+  public get nodes(): ValueSet<GraphNode> {
     return this._nodes;
   }
 
@@ -43,6 +44,20 @@ export default class Graph {
       result += `\n${node}`;
     }
     return result;
+  }
+
+  /**
+   * Check if a node is in the graph.
+   * @param node The node whose presence in the graph must be verified.
+   * @returns `true` if the node is in the graph, `false` otherwise.
+   */
+  public contains(node: GraphNode): boolean {
+    for (const node_ of this.nodes) {
+      if (node.equals(node_)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**

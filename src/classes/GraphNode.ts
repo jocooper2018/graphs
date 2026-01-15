@@ -16,15 +16,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import type Comparable from "../interfaces/Comparable";
 import GraphEdge from "./GraphEdge";
+import ValueSet from "./ValueSet";
 
-export default class GraphNode {
+export default class GraphNode implements Comparable<GraphNode> {
+  /**
+   * Check if two nodes are equal.
+   * @param a A node.
+   * @param b An other node.
+   * @returns `true` if the values of the two nodes are equal, `false` otherwise.
+   */
+  public static equals(a: GraphNode, b: GraphNode): boolean {
+    return a.value === b.value;
+  }
+
   private readonly _value: string;
-  private readonly _neighbors: Set<GraphEdge>;
+  private readonly _neighbors: ValueSet<GraphEdge>;
 
   constructor(value: string) {
     this._value = value;
-    this._neighbors = new Set<GraphEdge>();
+    this._neighbors = new ValueSet<GraphEdge>();
   }
 
   /** Value of the node. */
@@ -33,7 +45,7 @@ export default class GraphNode {
   }
 
   /** A set of neighbors nodes and their distance. */
-  public get neighbors(): Set<GraphEdge> {
+  public get neighbors(): ValueSet<GraphEdge> {
     return this._neighbors;
   }
 
@@ -43,6 +55,15 @@ export default class GraphNode {
       neighborsString += `${neighbor.node.value}: ${neighbor.distance}, `;
     }
     return `${this.value}: [${neighborsString.slice(0, -2)}]`;
+  }
+
+  /**
+   * Check if this node is equal to an other node.
+   * @param otherNode The node to compare with.
+   * @returns `true` if the values of the two nodes are equal, `false` otherwise.
+   */
+  public equals(otherNode: GraphNode): boolean {
+    return GraphNode.equals(this, otherNode);
   }
 
   /**
