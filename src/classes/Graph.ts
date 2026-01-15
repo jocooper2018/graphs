@@ -27,10 +27,12 @@ export default class Graph {
     this._nodes = new Set<GraphNode>();
   }
 
+  /** The name of the graph. */
   public get name(): string {
     return this._name;
   }
 
+  /** A set containing every nodes in the graph. */
   public get nodes(): Set<GraphNode> {
     return this._nodes;
   }
@@ -43,14 +45,28 @@ export default class Graph {
     return result;
   }
 
+  /**
+   * Add a node to the graph.
+   * @param node Node to add.
+   */
   public addNode(node: GraphNode): void {
     this.nodes.add(node);
   }
 
+  /**
+   * Remove a node from the graph.
+   * @param node Node to remove.
+   */
   public removeNode(node: GraphNode): void {
     this.nodes.delete(node);
   }
 
+  /**
+   * Connect 2 nodes of the graph in 1 direction.
+   * @param from Node at the start of the connection to create.
+   * @param to Node at the end of the connection to create.
+   * @param distance Distance between the nodes.
+   */
   public connect(from: GraphNode, to: GraphNode, distance: number): void {
     if (!this.nodes.has(from)) {
       throw new Error(`Node ${from} not in graph ${this.name}`);
@@ -61,6 +77,11 @@ export default class Graph {
     from.addNeighbor(to, distance);
   }
 
+  /**
+   * Disconnect 2 nodes of the graph in 1 direction.
+   * @param from Node at the start of the connection to remove.
+   * @param to Node at the end of the connection to remove.
+   */
   public disconnect(from: GraphNode, to: GraphNode): void {
     if (!this.nodes.has(from)) {
       throw new Error(`Node ${from} not in graph ${this.name}`);

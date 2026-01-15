@@ -27,10 +27,12 @@ export default class GraphNode {
     this._neighbors = new Set<GraphEdge>();
   }
 
+  /** Value of the node. */
   public get value(): string {
     return this._value;
   }
 
+  /** A set of neighbors nodes and their distance. */
   public get neighbors(): Set<GraphEdge> {
     return this._neighbors;
   }
@@ -43,10 +45,19 @@ export default class GraphNode {
     return `${this.value}: [${neighborsString.slice(0, -2)}]`;
   }
 
+  /**
+   * Add a new neighbor node at a certain distance from this node.
+   * @param node The new neighbor node.
+   * @param distance Distance between this node and the new neighbor node.
+   */
   public addNeighbor(node: GraphNode, distance: number): void {
     this.neighbors.add(new GraphEdge(node, distance));
   }
 
+  /**
+   * Remove a node from the neighbors.
+   * @param node Node to remove from the neighbors.
+   */
   public removeNeighbor(node: GraphNode): void {
     let edgeToDelete: GraphEdge | null = null;
     for (const neighbor of this.neighbors) {

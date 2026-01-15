@@ -27,10 +27,12 @@ export default class GraphEdge {
     this._distance = distance;
   }
 
+  /** The node where the edge is pointing to. */
   public get node(): GraphNode {
     return this._node;
   }
 
+  /** The distance of the node. */
   public get distance(): number {
     return this._distance;
   }

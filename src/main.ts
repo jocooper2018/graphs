@@ -17,20 +17,8 @@
  */
 
 import Graph from "./classes/Graph";
-import GraphNode from "./classes/GraphNode";
+import { createGraph } from "./utils/testsGraphs";
 
-const graph = new Graph("Test graph");
-
-const nodeA = new GraphNode("A");
-const nodeB = new GraphNode("B");
-const nodeC = new GraphNode("C");
-
-graph.addNode(nodeA);
-graph.addNode(nodeB);
-graph.addNode(nodeC);
-
-graph.connect(nodeA, nodeB, 1);
-graph.connect(nodeA, nodeB, 2);
-graph.connect(nodeB, nodeC, 1);
+const graph: Graph = createGraph();
 
 console.log(graph.toString());
