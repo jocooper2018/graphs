@@ -16,6 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import type { PathType } from "../types";
+import DijkstraExplorationGraph from "./DijkstraExplorationGraph";
+import DijkstraExplorationGraphNode from "./DijkstraExplorationGraphNode";
 import GraphNode from "./GraphNode";
 import ValueSet from "./ValueSet";
 
@@ -105,5 +108,72 @@ export default class Graph {
       throw new Error(`Node ${from} not in graph ${this.name}`);
     }
     from.removeNeighbor(to);
+  }
+
+  /**
+   * Search a node in the graph by its value. Return `null` if the node was not found.
+   * @param value Value of the wanted node.
+   * @returns The node of the graph whose value is `value`, and `null` if no node of the graph has the wanted value.
+   */
+  public getNodeByValue(value: string): GraphNode | null {
+    for (const node of this.nodes) {
+      if (node.value === value) {
+        return node;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Find the shortest path and its distance using the Dijkstra's algorithm. 
+   * If no path exist, `null` is returned.
+   * @param start Starting node.
+   * @param destination Destination node.
+   * @returns The shortest path between `start` and `destination` its length if it exist, `null` otherwise.
+   */
+  public dijkstra(start: GraphNode, destination: GraphNode): PathType | null {
+    const explorationGraph = new DijkstraExplorationGraph();
+    let currentNode: DijkstraExplorationGraphNode | null;
+    let pathFound: boolean = false;
+
+    currentNode = new DijkstraExplorationGraphNode(start, null, 0);
+    explorationGraph.addNode(currentNode);
+
+    while (!pathFound && currentNode !== null) {
+      // 1. Exploration
+      for (const neighbor of currentNode.node.neighbors) {
+        if (neighbor.node === currentNode.previousNode?.node) {
+          continue;
+        }
+        explorationGraph.addNode(
+          new DijkstraExplorationGraphNode(
+            neighbor.node,
+            currentNode,
+            currentNode.totalDistance + neighbor.distance
+          )
+        );
+      }
+      currentNode.explored = true;
+
+      // 2. Selection
+      explorationGraph.eliminateDuplicates();
+      currentNode = explorationGraph.getClosestUnexploredDijkstraNode();
+
+      pathFound = currentNode?.node === destination;
+    }
+
+    if (currentNode === null) {
+      // No path found
+      return null;
+    }
+
+    const distance: number = currentNode.totalDistance;
+    const solution: GraphNode[] = [];
+    while (currentNode !== null) {
+      solution.unshift(currentNode.node);
+      currentNode = currentNode.previousNode;
+    }
+
+    return { path: solution, distance: distance };
   }
 }

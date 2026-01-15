@@ -17,8 +17,38 @@
  */
 
 import Graph from "./classes/Graph";
+import type GraphNode from "./classes/GraphNode";
 import { createGraph } from "./utils/testsGraphs";
 
 const graph: Graph = createGraph();
 
 console.log(graph.toString());
+
+const nodeA: GraphNode | null = graph.getNodeByValue("A");
+const nodeJ: GraphNode | null = graph.getNodeByValue("J");
+
+if (!nodeA || !nodeJ) {
+  throw new Error("A or J is null");
+}
+
+console.log(nodeA.toString());
+console.log(nodeJ.toString());
+
+const pathAJ = graph.dijkstra(nodeA, nodeJ);
+
+if (pathAJ === null) {
+  console.log(
+    `Dijkstra: No path found between ${nodeA.value} and ${nodeJ.value}.`
+  );
+} else {
+  let solutionString: string = "";
+  for (const node of pathAJ.path) {
+    solutionString += `${node.value} -> `;
+  }
+  solutionString = `[${solutionString.slice(0, -4)}]`;
+
+  console.log(
+    `Shortest path between ${nodeA.value} and ${nodeJ.value}: ` +
+      `${solutionString} with a distance of ${pathAJ.distance}`
+  );
+}
