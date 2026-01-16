@@ -83,7 +83,6 @@ export default class DijkstraExplorationGraph {
    * except for the one with the smallest total distance.
    */
   public eliminateDuplicates(): void {
-    // TODO Check if this method can be deleted.
     for (const dNode of this.nodes) {
       if (dNode.eliminated) {
         continue;
