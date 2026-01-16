@@ -43,9 +43,9 @@ if (pathAJ === null) {
 } else {
   let solutionString: string = "";
   for (const node of pathAJ.path) {
-    solutionString += `${node.value} -> `;
+    solutionString += `${node.value} → `;
   }
-  solutionString = `[${solutionString.slice(0, -4)}]`;
+  solutionString = `[${solutionString.slice(0, -3)}]`;
 
   console.log(
     `Shortest path between ${nodeA.value} and ${nodeJ.value}: ` +
