@@ -1,0 +1,1 @@
+export const SCALE = 2.1735073084909277;

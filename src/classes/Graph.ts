@@ -46,7 +46,7 @@ export default class Graph {
   public toString(): string {
     let result: string = `${this.name}:`;
     for (const node of this.nodes) {
-      result += `\n${node}`;
+      result += `\n\t${node}`;
     }
     return result;
   }
@@ -87,7 +87,7 @@ export default class Graph {
    * @param to Node at the end of the connection to create.
    * @param distance Distance between the nodes.
    */
-  public connect(from: GraphNode, to: GraphNode, distance: number): void {
+  public connect(from: GraphNode, to: GraphNode, distance?: number): void {
     if (!this.nodes.has(from)) {
       throw new Error(`Node ${from} not in graph ${this.name}`);
     }

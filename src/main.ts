@@ -19,52 +19,71 @@
 import "./style.css";
 import Graph from "./classes/Graph";
 import type GraphNode from "./classes/GraphNode";
-import { createGraph } from "./utils/testsGraphs";
+import { createGraph, getBretagne } from "./utils/testsGraphs";
 import * as d3 from "d3";
+import { SCALE } from "./consts";
 
-const graph: Graph = createGraph();
-
-console.log(graph.toString());
-
-const nodeA: GraphNode | null = graph.getNodeByValue("A");
-const nodeJ: GraphNode | null = graph.getNodeByValue("J");
-
-if (!nodeA || !nodeJ) {
-  throw new Error("A or J is null");
-}
-
-console.log(nodeA.toString());
-console.log(nodeJ.toString());
-
-const pathAJ = graph.dijkstra(nodeA, nodeJ);
-
-if (pathAJ === null) {
-  console.log(
-    `Dijkstra: No path found between ${nodeA.value} and ${nodeJ.value}.`,
-  );
-} else {
-  let solutionString: string = "";
-  for (const node of pathAJ.path) {
-    solutionString += `${node.value} → `;
-  }
-  solutionString = `[${solutionString.slice(0, -3)}]`;
-
-  console.log(
-    `Shortest path between ${nodeA.value} and ${nodeJ.value}: ` +
-      `${solutionString} with a distance of ${pathAJ.distance}`,
-  );
-}
-
-const svg = d3.select<SVGSVGElement, unknown>("svg");
-
-const setSvgSize = () => {
-  svg.attr("width", window.innerWidth);
-  svg.attr("height", window.innerHeight);
-  svg.attr("viewBox", `0 0 ${window.innerWidth} ${window.innerHeight}`);
+const view = {
+  cx: 1425,
+  cy: 1000,
+  scale: SCALE / 1,
 };
 
-setSvgSize();
+const svg = d3.select<SVGSVGElement, unknown>("#graph-svg");
 
-window.addEventListener("resize", setSvgSize);
+const setSvgView = () => {
+  const width: number = window.innerWidth * view.scale;
+  const height: number = window.innerHeight * view.scale;
+  const x: number = view.cx - width / 2;
+  const y: number = view.cy - height / 2;
+  svg.attr("width", window.innerWidth);
+  svg.attr("height", window.innerHeight);
+  svg.attr("viewBox", `${x} ${y} ${width} ${height}`);
+};
 
-graph.drawGraph(svg);
+setSvgView();
+
+window.addEventListener("resize", setSvgView);
+
+const shortestPath = (
+  graph: Graph,
+  startName: string,
+  destinationName: string,
+): void => {
+  const startNode: GraphNode | null = graph.getNodeByValue(startName);
+  const destinationNode: GraphNode | null =
+    graph.getNodeByValue(destinationName);
+  if (!startNode) {
+    throw new Error(`${startName} not in graph ${graph.name}`);
+  }
+  if (!destinationNode) {
+    throw new Error(`${destinationName} not in graph ${graph.name}`);
+  }
+  const path = graph.dijkstra(startNode, destinationNode);
+  if (path === null) {
+    console.log(
+      `Dijkstra: No path found between ${startNode.value} and ${destinationNode.value}.`,
+    );
+  } else {
+    let solutionString: string = "";
+    for (const node of path.path) {
+      solutionString += `${node.value} → `;
+    }
+    solutionString = `[${solutionString.slice(0, -3)}]`;
+
+    console.log(
+      `Shortest path between ${startNode.value} and ${destinationNode.value}: ` +
+        `${solutionString} with a distance of ${Math.round(path.distance)}`,
+    );
+  }
+};
+
+const graph: Graph = createGraph();
+shortestPath(graph, "A", "B");
+
+const bretagne: Graph = getBretagne();
+console.log(bretagne.toString());
+shortestPath(bretagne, "Lorient", "Lannion");
+shortestPath(bretagne, "Brest", "Rennes");
+
+bretagne.drawGraph(svg);

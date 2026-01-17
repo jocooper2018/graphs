@@ -60,7 +60,7 @@ export default class GraphNode implements Comparable<GraphNode> {
   public toString(): string {
     let neighborsString: string = "";
     for (const neighbor of this.neighbors) {
-      neighborsString += `${neighbor.node.value}: ${neighbor.distance}, `;
+      neighborsString += `${neighbor.node.value}: ${Math.round(neighbor.distance)}, `;
     }
     return `${this.value}: [${neighborsString.slice(0, -2)}]`;
   }
@@ -81,7 +81,7 @@ export default class GraphNode implements Comparable<GraphNode> {
    */
   public addNeighbor(node: GraphNode, distance?: number): void {
     if (!distance) {
-      distance = this.position.distanceTo(node.position)
+      distance = this.position.distanceTo(node.position);
     }
     this.neighbors.add(new GraphEdge(node, distance));
   }
