@@ -16,6 +16,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+/**
+ * In mathematics, the Pythagorean theorem or Pythagoras's theorem is a fundamental
+ * relation in Euclidean geometry between the three sides of a right triangle.
+ * It states that the area of the square whose side is the hypotenuse
+ * (the side opposite the right angle) is equal to the sum of the areas of the
+ * squares on the other two sides.
+ *
+ * The theorem can be written as an equation relating the lengths of the sides 
+ * a, b and the hypotenuse c, sometimes called the Pythagorean equation: a^2 + b^2 = c^2.
+ *
+ * @param a The length of one of the sides adjacent to the right angle in a right triangle.
+ * @param b The length of the other side adjacent to the right angle in a right triangle.
+ * @returns The hypotenuse length.
+ * @see https://en.wikipedia.org/wiki/Pythagorean_theorem
+ */
 export const pythagoras = (a: number, b: number): number => {
   return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
 };
