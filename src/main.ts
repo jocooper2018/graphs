@@ -16,9 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import "./style.css";
 import Graph from "./classes/Graph";
 import type GraphNode from "./classes/GraphNode";
 import { createGraph } from "./utils/testsGraphs";
+import * as d3 from "d3";
 
 const graph: Graph = createGraph();
 
@@ -38,7 +40,7 @@ const pathAJ = graph.dijkstra(nodeA, nodeJ);
 
 if (pathAJ === null) {
   console.log(
-    `Dijkstra: No path found between ${nodeA.value} and ${nodeJ.value}.`
+    `Dijkstra: No path found between ${nodeA.value} and ${nodeJ.value}.`,
   );
 } else {
   let solutionString: string = "";
@@ -49,6 +51,20 @@ if (pathAJ === null) {
 
   console.log(
     `Shortest path between ${nodeA.value} and ${nodeJ.value}: ` +
-      `${solutionString} with a distance of ${pathAJ.distance}`
+      `${solutionString} with a distance of ${pathAJ.distance}`,
   );
 }
+
+const svg = d3.select<SVGSVGElement, unknown>("svg");
+
+const setSvgSize = () => {
+  svg.attr("width", window.innerWidth);
+  svg.attr("height", window.innerHeight);
+  svg.attr("viewBox", `0 0 ${window.innerWidth} ${window.innerHeight}`);
+};
+
+setSvgSize();
+
+window.addEventListener("resize", setSvgSize);
+
+graph.drawGraph(svg);

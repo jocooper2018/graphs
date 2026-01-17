@@ -19,6 +19,7 @@
 import type Comparable from "../interfaces/Comparable";
 import GraphEdge from "./GraphEdge";
 import ValueSet from "./ValueSet";
+import Vector2 from "./Vector2";
 
 export default class GraphNode implements Comparable<GraphNode> {
   /**
@@ -32,16 +33,23 @@ export default class GraphNode implements Comparable<GraphNode> {
   }
 
   private readonly _value: string;
+  private readonly _position: Vector2;
   private readonly _neighbors: ValueSet<GraphEdge>;
 
-  constructor(value: string) {
+  constructor(value: string, position: Vector2) {
     this._value = value;
+    this._position = position;
     this._neighbors = new ValueSet<GraphEdge>();
   }
 
   /** Value of the node. */
   public get value(): string {
     return this._value;
+  }
+
+  /** The position of the node. */
+  public get position(): Vector2 {
+    return this._position;
   }
 
   /** A set of neighbors nodes and their distance. */

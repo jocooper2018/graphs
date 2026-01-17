@@ -18,6 +18,7 @@
 
 import Graph from "../classes/Graph";
 import GraphNode from "../classes/GraphNode";
+import Vector2 from "../classes/Vector2";
 
 /**
  * Example graph from the french Wikipedia page on Dijkstra's algorithm.
@@ -28,16 +29,16 @@ export const createGraph = () => {
     "Example graph from the french Wikipedia page on Dijkstra's algorithm"
   );
 
-  const node_a: GraphNode = new GraphNode("A");
-  const node_b: GraphNode = new GraphNode("B");
-  const node_c: GraphNode = new GraphNode("C");
-  const node_d: GraphNode = new GraphNode("D");
-  const node_e: GraphNode = new GraphNode("E");
-  const node_f: GraphNode = new GraphNode("F");
-  const node_g: GraphNode = new GraphNode("G");
-  const node_h: GraphNode = new GraphNode("H");
-  const node_i: GraphNode = new GraphNode("I");
-  const node_j: GraphNode = new GraphNode("J");
+  const node_a: GraphNode = new GraphNode("A", new Vector2(201, 23));
+  const node_b: GraphNode = new GraphNode("B", new Vector2(62, 111));
+  const node_c: GraphNode = new GraphNode("C", new Vector2(201, 111));
+  const node_d: GraphNode = new GraphNode("D", new Vector2(330, 111));
+  const node_e: GraphNode = new GraphNode("E", new Vector2(438, 111));
+  const node_f: GraphNode = new GraphNode("F", new Vector2(60, 219));
+  const node_g: GraphNode = new GraphNode("G", new Vector2(175, 219));
+  const node_h: GraphNode = new GraphNode("H", new Vector2(310, 219));
+  const node_i: GraphNode = new GraphNode("I", new Vector2(180, 307));
+  const node_j: GraphNode = new GraphNode("J", new Vector2(310, 395));
 
   graph.addNode(node_a);
   graph.addNode(node_b);

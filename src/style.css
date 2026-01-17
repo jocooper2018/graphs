@@ -1,3 +1,16 @@
+html {
+  overflow: hidden;
+}
+
 body {
   margin: 0;
+}
+
+line {
+  stroke: black;
+}
+
+ellipse {
+  stroke: black;
+  fill: white;
 }

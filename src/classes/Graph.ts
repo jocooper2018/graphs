@@ -19,8 +19,10 @@
 import type { PathType } from "../types";
 import DijkstraExplorationGraph from "./DijkstraExplorationGraph";
 import DijkstraExplorationGraphNode from "./DijkstraExplorationGraphNode";
+import type GraphEdge from "./GraphEdge";
 import GraphNode from "./GraphNode";
 import ValueSet from "./ValueSet";
+import * as d3 from "d3";
 
 export default class Graph {
   private readonly _name: string;
@@ -125,7 +127,52 @@ export default class Graph {
   }
 
   /**
-   * Find the shortest path and its distance using the Dijkstra's algorithm. 
+   * Draw the graph in a svg using d3.js.
+   * @param svg The d3 selection of a svg in which draw the graph.
+   */
+  public drawGraph(
+    svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, any>,
+  ): void {
+    // Add lines
+    const linesG = svg.append("g");
+    for (const node of this.nodes) {
+      linesG
+        .append("g")
+        .selectAll("line")
+        .data(node.neighbors)
+        .join("line")
+        .attr("x1", node.position.x)
+        .attr("y1", node.position.y)
+        .attr("x2", (neighbor: GraphEdge) => neighbor.node.position.x)
+        .attr("y2", (neighbor: GraphEdge) => neighbor.node.position.y);
+    }
+
+    // Add nodes
+    svg
+      .append("g")
+      .selectAll("text")
+      .data(this.nodes)
+      .join("ellipse")
+      .attr("cx", (node: GraphNode) => node.position.x)
+      .attr("cy", (node: GraphNode) => node.position.y)
+      .attr("rx", (node: GraphNode) => (node.value.length - 1) * 5 + 20)
+      .attr("ry", 20);
+
+    // Add texts
+    svg
+      .append("g")
+      .selectAll("text")
+      .data(this.nodes)
+      .join("text")
+      .text((node: GraphNode) => node.value)
+      .attr("x", (node: GraphNode) => node.position.x)
+      .attr("y", (node: GraphNode) => node.position.y)
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "middle");
+  }
+
+  /**
+   * Find the shortest path and its distance using the Dijkstra's algorithm.
    * If no path exist, `null` is returned.
    * @param start Starting node.
    * @param destination Destination node.
@@ -149,8 +196,8 @@ export default class Graph {
           new DijkstraExplorationGraphNode(
             neighbor.node,
             currentNode,
-            currentNode.totalDistance + neighbor.distance
-          )
+            currentNode.totalDistance + neighbor.distance,
+          ),
         );
       }
       currentNode.explored = true;
