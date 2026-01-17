@@ -77,9 +77,12 @@ export default class GraphNode implements Comparable<GraphNode> {
   /**
    * Add a new neighbor node at a certain distance from this node.
    * @param node The new neighbor node.
-   * @param distance Distance between this node and the new neighbor node.
+   * @param distance Distance between this node and the new neighbor node. If missing, the distance is computed with pythagoras.
    */
-  public addNeighbor(node: GraphNode, distance: number): void {
+  public addNeighbor(node: GraphNode, distance?: number): void {
+    if (!distance) {
+      distance = this.position.distanceTo(node.position)
+    }
     this.neighbors.add(new GraphEdge(node, distance));
   }
 
